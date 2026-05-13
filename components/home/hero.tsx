@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/site/container";
 import { Button } from "@/components/ui/button";
+import { HeroFlow } from "./hero-flow";
 
 export function HomeHero() {
   return (
     <section className="relative overflow-hidden border-b border-border bg-background">
-      <Container className="py-24 sm:py-28 lg:py-32">
+      <HeroFlow />
+      <Container className="relative py-24 sm:py-28 lg:py-32">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
