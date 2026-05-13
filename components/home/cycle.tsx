@@ -1,4 +1,5 @@
 import { Section, SectionHeader } from "@/components/site/section";
+import { DayCycleTimeline } from "./day-cycle-timeline";
 
 const humanWork = [
   { verb: "Review", body: "overnight PRs, designs, and test runs" },
@@ -21,7 +22,11 @@ export function HomeCycle() {
         lede="Humans steer and review during the day. Agents build, test, and watch production overnight. Every morning, the next decision is already queued up."
       />
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="mt-12">
+        <DayCycleTimeline />
+      </div>
+
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <article className="rounded-xl border border-border bg-card p-8">
           <h3 className="text-base font-semibold tracking-tight text-foreground">
             During the day, humans…
