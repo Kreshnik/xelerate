@@ -13,24 +13,24 @@ export function PhaseTabs() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="A closer look · Discovery"
-        title="From a paragraph of intent to a costed epic tree."
-        lede="One example of how a single phase looks inside the cockpit. The same pattern — agents draft, humans approve — runs across all five phases."
+        eyebrow="Inside one phase · Discovery"
+        title="From a paragraph of intent to an epic tree you can ship."
+        lede="Discovery is the messiest phase to automate, so we show it in full. The same pattern — agents draft, humans approve — runs in every phase."
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-            What happens
+            The hand-off
           </p>
           <h3 className="mt-4 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            Drag in a brief. Get back epics you can ship.
+            Drop a brief. Walk out with epics, ready to build.
           </h3>
           <p className="mt-4 text-muted-foreground">
-            Drop a Loom, a Notion doc, or a paragraph. The intake agent picks
-            modules from the catalog, the requirement agent decomposes the brief
-            into an epic tree with acceptance criteria, and ambiguities are flagged
-            for a human — not assumed away.
+            A Loom, a Notion doc, or a paragraph goes in. The intake agent picks
+            modules from the catalogue; the requirement agent decomposes the
+            brief into an epic tree with acceptance criteria. Ambiguities are
+            flagged for a human — never assumed away.
           </p>
 
           <dl className="mt-8 space-y-4 text-sm">

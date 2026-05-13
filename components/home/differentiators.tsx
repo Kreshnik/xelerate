@@ -35,9 +35,17 @@ const items = [
 
 interface HomeDifferentiatorsProps {
   limit?: number;
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
 }
 
-export function HomeDifferentiators({ limit }: HomeDifferentiatorsProps = {}) {
+export function HomeDifferentiators({
+  limit,
+  eyebrow = "Why teams switch",
+  title = "What you stop fighting once the lifecycle is one platform.",
+  lede = "Every gap a single-purpose AI tool leaves open — closed by one orchestrator. Built for the way real teams ship software.",
+}: HomeDifferentiatorsProps = {}) {
   const visible = typeof limit === "number" ? items.slice(0, limit) : items;
   const gridCols =
     visible.length <= 3
@@ -46,11 +54,7 @@ export function HomeDifferentiators({ limit }: HomeDifferentiatorsProps = {}) {
 
   return (
     <Section className="border-y border-border bg-card/40">
-      <SectionHeader
-        eyebrow="Why teams switch"
-        title="What you stop fighting once the lifecycle is one platform."
-        lede="Every gap a single-purpose AI tool leaves open — closed by one orchestrator. Built for the way real teams ship software."
-      />
+      <SectionHeader eyebrow={eyebrow} title={title} lede={lede} />
 
       <ul
         className={`mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border ${gridCols}`}
