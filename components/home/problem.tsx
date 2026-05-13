@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { Section, SectionHeader } from "@/components/site/section";
 
 const breakdowns = [
@@ -21,22 +22,32 @@ const breakdowns = [
 
 export function HomeProblem() {
   return (
-    <Section className="bg-card/40 border-y border-border">
+    <Section className="border-y border-border bg-card/40">
       <SectionHeader
         eyebrow="The problem"
         title="AI can write code. It can't run development."
         lede="Single-purpose AI tools optimise for one slice — a prompt in, a snippet out. But software is a lifecycle, and every handover between briefs, designs, code, tests, and signals is still breaking by hand."
       />
 
-      <ul className="mt-12 grid gap-4 sm:grid-cols-2">
+      <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2">
         {breakdowns.map((item) => (
           <li
             key={item.title}
-            className="rounded-xl border border-border bg-card p-6"
+            className="group relative bg-card p-7 transition-colors hover:bg-card/70"
           >
-            <p className="text-base font-semibold tracking-tight text-foreground">
+            <div
+              aria-hidden
+              className="flex items-center gap-2 text-foreground/40"
+            >
+              <span className="h-px w-8 border-t border-dashed border-current" />
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-destructive/10 text-destructive ring-1 ring-destructive/15">
+                <X className="size-3.5" strokeWidth={2.5} />
+              </span>
+              <span className="h-px flex-1 border-t border-dashed border-current" />
+            </div>
+            <h3 className="mt-5 text-lg font-semibold tracking-tight text-foreground">
               {item.title}
-            </p>
+            </h3>
             <p className="mt-2 text-sm text-muted-foreground">{item.body}</p>
           </li>
         ))}

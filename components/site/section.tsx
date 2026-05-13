@@ -25,6 +25,25 @@ interface SectionHeaderProps {
   className?: string;
 }
 
+export function Eyebrow({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <p
+      className={cn(
+        "text-xs font-medium tracking-[0.18em] text-dutch uppercase",
+        className,
+      )}
+    >
+      {children}
+    </p>
+  );
+}
+
 export function SectionHeader({
   eyebrow,
   title,
@@ -40,11 +59,7 @@ export function SectionHeader({
         className,
       )}
     >
-      {eyebrow && (
-        <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-          {eyebrow}
-        </p>
-      )}
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
         {title}
       </h2>
@@ -54,24 +69,5 @@ export function SectionHeader({
         </p>
       )}
     </div>
-  );
-}
-
-export function Eyebrow({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <p
-      className={cn(
-        "text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase",
-        className,
-      )}
-    >
-      {children}
-    </p>
   );
 }

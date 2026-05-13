@@ -241,7 +241,7 @@ export function HeroFlow() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none absolute inset-0 block h-full w-full opacity-[0.55]"
+      className="pointer-events-none absolute inset-0 block h-full w-full opacity-[0.28]"
       style={{
         maskImage:
           "radial-gradient(ellipse 58% 40% at 50% 50%, rgba(0,0,0,0.16) 25%, rgba(0,0,0,1) 95%)",
