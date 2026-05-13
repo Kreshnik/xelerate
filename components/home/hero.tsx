@@ -1,68 +1,38 @@
 import Link from "next/link";
 import { Container } from "@/components/site/container";
-import { Eyebrow } from "@/components/site/section";
 import { Button } from "@/components/ui/button";
-
-const lifecyclePhases = [
-  { step: "01", phase: "Discovery", title: "Frame the problem", role: "Product Manager", initials: "PM", anchor: "phase-spark" },
-  { step: "02", phase: "Design", title: "Plan the build", role: "Design Agent", initials: "DS", anchor: "phase-shape" },
-  { step: "03", phase: "Development", title: "Ship the code", role: "Engineer", initials: "EN", anchor: "phase-build" },
-  { step: "04", phase: "Testing", title: "Prove it works", role: "QA Agent", initials: "QA", anchor: "phase-launch" },
-  { step: "05", phase: "Maintenance", title: "Keep it alive", role: "Observer", initials: "OB", anchor: "phase-scale" },
-];
 
 export function HomeHero() {
   return (
     <section className="relative overflow-hidden border-b border-border bg-background">
-      <Container className="py-20 sm:py-28 lg:py-32">
-        <div className="max-w-3xl">
-          <Eyebrow>The agentic SDLC platform</Eyebrow>
-          <h1 className="mt-5 text-balance text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            One control tower for the entire software lifecycle.
+      <Container className="py-24 sm:py-28 lg:py-32">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            The agentic SDLC platform
+          </span>
+
+          <h1 className="mx-auto mt-7 max-w-[20ch] text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            Ship software with twelve agents and one control tower.
           </h1>
-          <p className="mt-6 text-pretty text-lg text-muted-foreground">
-            Xelerate orchestrates AI agents across discovery, design, development, testing,
-            and maintenance — with your team in the control tower, every step of the way.
+          <p className="mx-auto mt-6 max-w-[56ch] text-pretty text-lg text-muted-foreground">
+            Xelerate orchestrates the whole software lifecycle — discovery, design,
+            build, test, and run — with your team approving every gate.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Button asChild variant="brand" size="lg">
-              <Link href="/contact">Chat with our PM agent</Link>
+              <Link href="/contact">Talk to the team</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/contact">Watch the 2-min tour</Link>
+              <Link href="/product">See how it works</Link>
             </Button>
           </div>
+
           <p className="mt-8 text-sm text-muted-foreground">
-            Trusted by small, innovative teams shipping production software ·{" "}
-            <Link href="/solutions" className="text-foreground underline-offset-4 hover:underline">
-              See case studies →
-            </Link>
+            Built for small, innovative teams shipping production software.
           </p>
         </div>
-
-        <ol className="mt-16 grid gap-3 lg:grid-cols-5">
-          {lifecyclePhases.map((p) => (
-            <li
-              key={p.step}
-              className="group rounded-xl border border-border bg-card p-5 transition-colors hover:border-foreground/30"
-            >
-              <p className="text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
-                {p.step} · {p.phase}
-              </p>
-              <p className="mt-3 text-lg font-semibold text-foreground">{p.title}</p>
-              <Link
-                href={`/approach#${p.anchor}`}
-                className="mt-4 inline-flex items-center gap-2 text-xs text-muted-foreground"
-                aria-label={`Jump to ${p.title} on the Approach page`}
-              >
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-[10px] font-semibold text-foreground">
-                  {p.initials}
-                </span>
-                {p.role}
-              </Link>
-            </li>
-          ))}
-        </ol>
       </Container>
     </section>
   );

@@ -19,9 +19,9 @@ export function ProductSecurity() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="Security"
+        eyebrow="Security & governance"
         title="Built for engineering teams, not just demos."
-        lede="Your codebase never trains a public model. Your data lives in your tenancy. Every agent action is logged, traceable, and revertible."
+        lede="Your codebase never trains a public model. Your data stays in your tenancy. Every agent action is logged, traceable, and revertible."
       />
 
       <ul className="mt-12 grid gap-6 lg:grid-cols-3">

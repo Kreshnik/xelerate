@@ -24,9 +24,9 @@ export function AboutDogfood() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="How we build"
+        eyebrow="How we know it works"
         title="We use Xelerate to build Xelerate."
-        lede="Every ticket on our own board moves through the same lifecycle we sell to you: brief → spec → plan → execute → review → test → UAT → ship. The agents you'll run are the agents we run."
+        lede="Every ticket on our own roadmap moves through the same lifecycle we sell you: brief, spec, plan, execute, review, test, UAT, ship. The agents you'd run are the agents we run today — here's our board from this afternoon."
       />
 
       <div className="mt-12 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -62,7 +62,7 @@ export function AboutDogfood() {
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
         <article className="rounded-xl border border-border bg-card p-7">
           <h3 className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-            What an agent did yesterday
+            Yesterday · what the agents did
           </h3>
           <dl className="mt-5 grid grid-cols-3 gap-4">
             {agentMetrics.map((m) => (
@@ -73,12 +73,12 @@ export function AboutDogfood() {
             ))}
           </dl>
           <p className="mt-5 text-xs tracking-[0.18em] text-muted-foreground uppercase">
-            Volume. No silent commits.
+            Volume · auditable, every step
           </p>
         </article>
         <article className="rounded-xl border border-border bg-foreground p-7 text-background">
           <h3 className="text-xs font-medium tracking-[0.18em] text-background/70 uppercase">
-            What a human did yesterday
+            Yesterday · what we did
           </h3>
           <dl className="mt-5 grid grid-cols-3 gap-4">
             {humanMetrics.map((m) => (
@@ -89,7 +89,7 @@ export function AboutDogfood() {
             ))}
           </dl>
           <p className="mt-5 text-xs tracking-[0.18em] text-background/70 uppercase">
-            Decisions. The judgement calls.
+            Judgement · the calls only humans make
           </p>
         </article>
       </div>

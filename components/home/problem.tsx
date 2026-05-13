@@ -1,35 +1,43 @@
 import { Section, SectionHeader } from "@/components/site/section";
 
 const breakdowns = [
-  "Broken handovers",
-  "Inconsistent design",
-  "Unclear requirements",
-  "Poor test coverage",
-  "Long iteration cycles",
+  {
+    title: "Briefs lose fidelity",
+    body: "Notion doc → Figma file → Jira ticket → PR. Every hop drops context.",
+  },
+  {
+    title: "Coding agents miss the lifecycle",
+    body: "They write code, but skip the spec, the test plan, and the handoff.",
+  },
+  {
+    title: "Tests and QA stay manual",
+    body: "Coverage drifts. Regressions surface in production, not in CI.",
+  },
+  {
+    title: "Production signals never come back",
+    body: "Errors, telemetry, support tickets sit outside the planning loop.",
+  },
 ];
 
 export function HomeProblem() {
   return (
-    <Section>
+    <Section className="bg-card/40 border-y border-border">
       <SectionHeader
         eyebrow="The problem"
         title="AI can write code. It can't run development."
-        lede="Most AI tools optimise for one slice of the work — a prompt in, a snippet out. But software is a lifecycle. When AI only assists with coding, every handover in between still breaks."
+        lede="Single-purpose AI tools optimise for one slice — a prompt in, a snippet out. But software is a lifecycle, and every handover between briefs, designs, code, tests, and signals is still breaking by hand."
       />
 
-      <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        {breakdowns.map((label) => (
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2">
+        {breakdowns.map((item) => (
           <li
-            key={label}
-            className="flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 text-sm"
+            key={item.title}
+            className="rounded-xl border border-border bg-card p-6"
           >
-            <span
-              aria-hidden
-              className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-destructive/10 text-destructive"
-            >
-              ✕
-            </span>
-            <span className="text-foreground">{label}</span>
+            <p className="text-base font-semibold tracking-tight text-foreground">
+              {item.title}
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{item.body}</p>
           </li>
         ))}
       </ul>

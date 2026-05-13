@@ -1,35 +1,43 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/site/page-hero";
 import { ArcPhases } from "@/components/approach/arc-phases";
-import { ApproachEcosystem } from "@/components/approach/ecosystem";
 import { ApproachEntryPoints } from "@/components/approach/entry-points";
 import { CtaBlock } from "@/components/site/cta-block";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Approach",
   description:
-    "The Arc method: how we take founders and organisations from idea to scale, powered by AI-driven tooling and a team that activates at every stage.",
+    "How Xelerate runs software end-to-end: five lifecycle phases, twelve specialised agents, and a human gate between every phase. The artefact is the source of truth.",
 };
 
 export default function ApproachPage() {
   return (
     <>
       <PageHero
-        eyebrow="The Arc method"
-        title="Every great saga follows an arc."
-        lede="A story has a beginning and an end — but it's the journey that defines it. The Arc is our method for taking founders and organisations from where they are to where they need to be, powered by AI-driven tooling and a team that activates at every stage."
-      />
+        eyebrow="The method"
+        title="Five phases. Twelve agents. A human gate between every one."
+        lede="Discovery, Design, Development, Testing, Maintenance — one platform runs the full loop. Agents do the work in each phase; your team approves the artefact before it moves to the next."
+      >
+        <div className="flex flex-wrap items-center gap-3">
+          <Button asChild variant="brand" size="lg">
+            <Link href="/contact">Start orchestrating</Link>
+          </Button>
+          <Button asChild variant="ghost" size="lg">
+            <Link href="#phase-spark">Walk the lifecycle</Link>
+          </Button>
+        </div>
+      </PageHero>
       <ArcPhases />
-      <ApproachEcosystem />
       <ApproachEntryPoints />
       <CtaBlock
-        eyebrow="Start your arc"
-        title="Ready to write your saga?"
-        lede="Tell us where you are. We'll tell you where The Arc can take you."
-        primaryLabel="Let's talk"
-        secondaryLabel="See our sagas"
-        secondaryHref="/solutions"
-        footnote="● One team, idea to scale."
+        eyebrow="Run it on your backlog"
+        title="Bring one feature through the full loop."
+        lede="Pick a brief from your roadmap. We'll walk it through Discovery → Maintenance with you in 30 minutes — no slides."
+        primaryLabel="Start orchestrating"
+        secondaryLabel="See the product"
+        secondaryHref="/product"
       />
     </>
   );

@@ -14,7 +14,7 @@ export function AboutBackers() {
       <SectionHeader
         eyebrow="Backed by"
         title="A small group of operators who've built this before."
-        lede="Pre-seed. No press release, no fanfare. The people behind the cheques have all shipped production software for a living — they're who we call at midnight."
+        lede="Pre-seed, no fanfare. The people behind the cheques have all shipped production software for a living — they're who we call at midnight."
       />
 
       <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-5">

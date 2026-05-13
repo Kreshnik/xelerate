@@ -37,9 +37,9 @@ export function ProductModules() {
   return (
     <Section className="border-y border-border bg-card/40">
       <SectionHeader
-        eyebrow="Full catalogue"
-        title="The modules your project is built from."
-        lede="Every module ships with a machine-readable questionnaire. Your agents pick the right configuration for your project; you approve."
+        eyebrow="Module catalogue"
+        title="The things you'd normally rebuild — already built."
+        lede="Auth, payments, multi-tenancy, monitoring and more, each with a machine-readable questionnaire. Agents pick the configuration; you approve it."
       />
 
       <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">

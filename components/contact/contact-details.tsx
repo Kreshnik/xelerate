@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-const blocks = [
+const channels = [
   {
-    heading: "Email",
+    heading: "General inquiries",
     body: (
       <a
         href="mailto:hello@xelerate.ai"
@@ -13,60 +13,46 @@ const blocks = [
     ),
   },
   {
-    heading: "Office",
-    body: (
-      <address className="not-italic text-sm leading-6 text-muted-foreground">
-        Saga Ventures
-        <br />
-        Keizersgracht 555
-        <br />
-        1017 DR Amsterdam, NL
-      </address>
-    ),
-  },
-  {
     heading: "Careers",
     body: (
-      <p className="text-sm text-muted-foreground">
-        We&apos;re hiring product engineers, designers and platform builders.{" "}
-        <Link
-          href="/about#careers"
-          className="text-foreground underline-offset-4 hover:underline"
-        >
-          See open roles
-        </Link>
-        .
-      </p>
+      <Link
+        href="/about#careers"
+        className="text-foreground underline-offset-4 hover:underline"
+      >
+        See open roles
+      </Link>
     ),
   },
   {
-    heading: "Security / responsible disclosure",
+    heading: "Security disclosure",
     body: (
-      <p className="text-sm text-muted-foreground">
-        Found something we should know?{" "}
-        <a
-          href="mailto:security@xelerate.ai"
-          className="text-foreground underline-offset-4 hover:underline"
-        >
-          security@xelerate.ai
-        </a>{" "}
-        — PGP key on request.
-      </p>
+      <a
+        href="mailto:security@xelerate.ai"
+        className="text-foreground underline-offset-4 hover:underline"
+      >
+        security@xelerate.ai
+      </a>
     ),
   },
 ];
 
 export function ContactDetails() {
   return (
-    <ul className="space-y-8">
-      {blocks.map((b) => (
-        <li key={b.heading}>
-          <h2 className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-            {b.heading}
-          </h2>
-          <div className="mt-2 text-sm">{b.body}</div>
-        </li>
-      ))}
-    </ul>
+    <aside className="lg:pt-2">
+      <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+        Other ways to reach us
+      </p>
+      <ul className="mt-6 space-y-6">
+        {channels.map((c) => (
+          <li key={c.heading} className="text-sm">
+            <h2 className="font-medium text-foreground">{c.heading}</h2>
+            <div className="mt-1 text-muted-foreground">{c.body}</div>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-10 border-t border-border pt-6 text-xs leading-6 text-muted-foreground">
+        Saga Ventures · Keizersgracht 555 · 1017 DR Amsterdam, NL
+      </p>
+    </aside>
   );
 }

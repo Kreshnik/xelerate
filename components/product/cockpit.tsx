@@ -30,9 +30,9 @@ export function ProductCockpit() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="One cockpit"
+        eyebrow="The cockpit"
         title="Everything an engineering team needs, in one window."
-        lede="Project graph on the left, the artefact you're working on in the centre, agent activity on the right. No tab-juggling."
+        lede="Project on the left, the artefact in the centre, agent activity on the right. Every gate has a human signature; every action is in the log."
       />
 
       <div className="mt-12 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">

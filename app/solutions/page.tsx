@@ -9,7 +9,7 @@ import { CtaBlock } from "@/components/site/cta-block";
 export const metadata: Metadata = {
   title: "Solutions",
   description:
-    "Your process, voice, and IP stay yours. The control tower, agents and modules do the heavy lifting underneath.",
+    "Two ways teams ship with Xelerate: a working v1 from scratch, or a clean upgrade of what's already in production. Your IP stays yours.",
 };
 
 export default function SolutionsPage() {
@@ -17,14 +17,19 @@ export default function SolutionsPage() {
     <>
       <PageHero
         eyebrow="Solutions"
-        title="How we build around your DNA and process."
-        lede="Your team and your customers drive the process. Our technology and partner stack do the heavy lifting under the surface — so your IP is what gets compounded."
+        title="New product, or next version — we start where you are."
+        lede="Most teams arrive in one of two situations. We've shipped enough of both to know what the first four weeks need to look like. Your IP, voice, and process stay yours; the platform, agents, and partner stack do the heavy lifting underneath."
       />
-      <SolutionsDna />
+      <SolutionsTwoWaysIn />
       <SolutionsIndustries />
       <SolutionsCaseStudies />
-      <SolutionsTwoWaysIn />
-      <CtaBlock title="Tell us about your project." />
+      <SolutionsDna />
+      <CtaBlock
+        title="Tell us where you are. We'll tell you what week one looks like."
+        lede="Whether you're starting from a Figma file or a five-year-old codebase, the first reply lands within one business day."
+        primaryLabel="Start a project"
+        secondaryLabel="Talk to the team"
+      />
     </>
   );
 }

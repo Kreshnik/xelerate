@@ -22,9 +22,9 @@ export function HomeMetrics() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="Why we built this"
-        title="Lifecycle orchestration, by the numbers."
-        lede="Internal benchmarks comparing teams running Xelerate against the same teams shipping with point-tools alone. KPIs revisited every quarter."
+        eyebrow="Early benchmarks"
+        title="What changes when the lifecycle runs itself."
+        lede="Internal benchmarks comparing the same teams shipping with Xelerate against shipping with point-tools alone. Revisited every quarter."
       />
 
       <dl className="mt-12 grid gap-6 lg:grid-cols-3">

@@ -18,7 +18,7 @@ export function HomeCycle() {
       <SectionHeader
         eyebrow="Development cycle"
         title="Your team works 9 to 5. Your agents run 24/7."
-        lede="Humans review, steer and design during the day. Agents build, test and review around the clock. Results land in the morning, ready for the next decision."
+        lede="Humans steer and review during the day. Agents build, test, and watch production overnight. Every morning, the next decision is already queued up."
       />
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">

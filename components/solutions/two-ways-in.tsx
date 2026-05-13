@@ -1,50 +1,55 @@
 import Link from "next/link";
 import { Section, SectionHeader } from "@/components/site/section";
-import { Button } from "@/components/ui/button";
 
 const paths = [
   {
     n: "01",
     title: "Build from scratch",
-    body: "For founders and teams starting a new product. You bring the idea; we bring the platform, the agents, and a working v1.",
+    audience: "Founders and teams starting a new product.",
+    body: "You bring the idea and the wedge. We bring the platform, the agent fleet, and a working v1 your users can touch.",
     bullets: [
-      "Brief, design, build, test & deploy in one cockpit",
+      "Brief, design, build, test and deploy in one cockpit",
       "Pre-wired auth, payments, monitoring, multi-tenancy",
-      "Cloud deploy on AWS / GCP / Azure on day one",
-      "Named PM + Eng partner from Saga, in your channel",
+      "Cloud deploy on AWS, GCP or Azure on day one",
+      "Named PM and engineering partner in your channel",
     ],
+    timeline: "Working v1 in 4–6 weeks",
   },
   {
     n: "02",
-    title: "From V1.0 to V2.0",
-    body: "For products that are working but creaking. We replatform — or extend — without breaking what your users already rely on.",
+    title: "Upgrade what you have",
+    audience: "Products that are working, but creaking.",
+    body: "We replatform or extend what's running today, without breaking what your users already rely on. Agents do the rewrite; humans own the cut-over.",
     bullets: [
-      "Audit existing codebase & data; surface debt",
-      "Agent-driven rewrite with traceable diffs",
+      "Audit existing codebase and data; surface debt with cost",
+      "Agent-driven rewrite with traceable, reviewable diffs",
       "Cut-over plan with rollback at every step",
       "Knowledge handed back to your in-house team",
     ],
+    timeline: "First measurable lift in 6–8 weeks",
   },
 ];
 
 export function SolutionsTwoWaysIn() {
   return (
-    <Section className="border-y border-border bg-card/40">
+    <Section>
       <SectionHeader
-        eyebrow="Two ways in"
-        title="Build from scratch, or upgrade what you have."
-        lede="Same platform. Same agents. Different starting points."
+        eyebrow="Pick your starting line"
+        title="Two ways teams ship with us."
+        lede="Same platform, same agents — different starting points. Tell us which one fits and we'll scope the first milestone with you."
       />
 
       <ul className="mt-12 grid gap-6 lg:grid-cols-2">
         {paths.map((path) => (
           <li
             key={path.n}
-            className="rounded-xl border border-border bg-card p-8"
+            className="flex flex-col rounded-xl border border-border bg-card p-8"
           >
-            <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-              {path.n}
-            </p>
+            <div className="flex items-baseline justify-between gap-4">
+              <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+                {path.n} · {path.audience}
+              </p>
+            </div>
             <h3 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
               {path.title}
             </h3>
@@ -52,34 +57,27 @@ export function SolutionsTwoWaysIn() {
             <ul className="mt-6 space-y-2 text-sm">
               {path.bullets.map((b) => (
                 <li key={b} className="flex gap-2">
-                  <span className="text-foreground/70" aria-hidden>✓</span>
+                  <span className="text-foreground/60" aria-hidden>
+                    ✓
+                  </span>
                   <span className="text-foreground">{b}</span>
                 </li>
               ))}
             </ul>
+            <div className="mt-8 flex items-center justify-between border-t border-border pt-5">
+              <p className="text-sm font-medium text-foreground">
+                {path.timeline}
+              </p>
+              <Link
+                href="/contact"
+                className="text-sm font-medium text-foreground underline-offset-4 hover:underline"
+              >
+                Scope mine →
+              </Link>
+            </div>
           </li>
         ))}
       </ul>
-
-      <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center sm:text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
-        <div>
-          <p className="text-base text-foreground">
-            We ship a working v1 in <span className="font-semibold">4–6 weeks</span>.
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Talk to us about your timeline — we&apos;ll tell you which mode fits and
-            what a realistic first milestone looks like for your team.
-          </p>
-        </div>
-        <div className="mt-5 flex flex-col items-start gap-2 sm:mt-0 sm:items-end">
-          <Button asChild variant="brand">
-            <Link href="/contact">Start a project</Link>
-          </Button>
-          <p className="text-xs text-muted-foreground">
-            Reply within 1 business day · Amsterdam, NL · Remote-friendly
-          </p>
-        </div>
-      </div>
     </Section>
   );
 }

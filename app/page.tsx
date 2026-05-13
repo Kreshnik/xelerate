@@ -1,9 +1,9 @@
 import { HomeHero } from "@/components/home/hero";
 import { HomeProblem } from "@/components/home/problem";
-import { HomeSolution } from "@/components/home/solution";
+import { HowItWorks } from "@/components/home/how-it-works";
 import { HomeCycle } from "@/components/home/cycle";
-import { HomeDifferentiators } from "@/components/home/differentiators";
 import { HomeMetrics } from "@/components/home/metrics";
+import { HomeDifferentiators } from "@/components/home/differentiators";
 import { CtaBlock } from "@/components/site/cta-block";
 
 export default function HomePage() {
@@ -11,15 +11,16 @@ export default function HomePage() {
     <>
       <HomeHero />
       <HomeProblem />
-      <HomeSolution />
+      <HowItWorks />
       <HomeCycle />
-      <HomeDifferentiators />
       <HomeMetrics />
+      <HomeDifferentiators limit={3} />
       <CtaBlock
         title="Run your next project from one control tower."
-        lede="Free to start. No credit card. BYO model keys or use ours."
+        lede="Free to start. No credit card. Bring your own model keys or use ours."
         primaryLabel="Talk to the team"
-        secondaryLabel="Watch the 2-min tour"
+        secondaryHref="/product"
+        secondaryLabel="See the product"
       />
     </>
   );

@@ -2,72 +2,75 @@ import Link from "next/link";
 import { Section, SectionHeader } from "@/components/site/section";
 
 const phases = [
-  { n: "Phase 01", label: "Discovery", anchor: "phase-spark" },
-  { n: "Phase 02", label: "Design", anchor: "phase-shape" },
-  { n: "Phase 03", label: "Development", anchor: "phase-build" },
-  { n: "Phase 04", label: "Testing", anchor: "phase-launch" },
-  { n: "Phase 05", label: "Maintenance", anchor: "phase-scale" },
+  { n: "01", label: "Discovery", anchor: "phase-spark", current: true },
+  { n: "02", label: "Design", anchor: "phase-shape" },
+  { n: "03", label: "Development", anchor: "phase-build" },
+  { n: "04", label: "Testing", anchor: "phase-launch" },
+  { n: "05", label: "Maintenance", anchor: "phase-scale" },
 ];
 
 export function PhaseTabs() {
   return (
     <Section>
       <SectionHeader
-        eyebrow="The control tower"
-        title="One UI, five phases."
-        lede="Click any phase. Each tab swaps in the actual product surface for that step."
+        eyebrow="A closer look · Discovery"
+        title="From a paragraph of intent to a costed epic tree."
+        lede="One example of how a single phase looks inside the cockpit. The same pattern — agents draft, humans approve — runs across all five phases."
       />
 
-      <nav
-        aria-label="Control tower phases — navigate to the matching phase on the Approach page"
-        className="mt-10 overflow-x-auto"
-      >
-        <ul className="flex min-w-max gap-2 rounded-xl border border-border bg-card p-2">
-          {phases.map((p) => (
-            <li key={p.anchor}>
-              <Link
-                href={`/approach#${p.anchor}`}
-                className="block rounded-md px-4 py-3 transition-colors hover:bg-secondary"
-              >
-                <p className="text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
-                  {p.n}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-foreground">
-                  {p.label}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+      <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
-            Phase 01 · Discovery
+            What happens
           </p>
           <h3 className="mt-4 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            From scribbles to structured epics.
+            Drag in a brief. Get back epics you can ship.
           </h3>
           <p className="mt-4 text-muted-foreground">
-            Drag-drop intake plus a catalog of ready-to-use modules — Task Board,
-            Help Center, Multi-tenancy, Payments, Auth and more. Agents wire them in;
-            you don't rebuild the basics.
+            Drop a Loom, a Notion doc, or a paragraph. The intake agent picks
+            modules from the catalog, the requirement agent decomposes the brief
+            into an epic tree with acceptance criteria, and ambiguities are flagged
+            for a human — not assumed away.
           </p>
 
-          <dl className="mt-6 space-y-3 text-sm">
-            <div>
-              <dt className="font-semibold text-foreground">PRODUCT-INTAKE-AGENT</dt>
-              <dd className="text-muted-foreground">briefs in, plug-in modules picked from catalog</dd>
+          <dl className="mt-8 space-y-4 text-sm">
+            <div className="border-l-2 border-border pl-4">
+              <dt className="font-semibold tracking-tight text-foreground">
+                Product Intake agent
+              </dt>
+              <dd className="mt-1 text-muted-foreground">
+                Reads the brief; proposes a stack from the module catalog.
+              </dd>
             </div>
-            <div>
-              <dt className="font-semibold text-foreground">REQUIREMENT-AGENT</dt>
-              <dd className="text-muted-foreground">generated epic tree with acceptance criteria</dd>
+            <div className="border-l-2 border-border pl-4">
+              <dt className="font-semibold tracking-tight text-foreground">
+                Requirement agent
+              </dt>
+              <dd className="mt-1 text-muted-foreground">
+                Generates the epic tree with acceptance criteria. Asks for a
+                human call on every ambiguity.
+              </dd>
             </div>
-            <div className="text-muted-foreground">
-              Stakeholder Q&A — agent flags every ambiguity for review
+            <div className="border-l-2 border-border pl-4">
+              <dt className="font-semibold tracking-tight text-foreground">
+                You
+              </dt>
+              <dd className="mt-1 text-muted-foreground">
+                Approve, edit, or send back for revision. Nothing moves to Design
+                until the gate is signed off.
+              </dd>
             </div>
           </dl>
+
+          <div className="mt-8">
+            <Link
+              href="/approach"
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline-offset-4 hover:underline"
+            >
+              See all five phases on the Approach page
+              <span aria-hidden>-&gt;</span>
+            </Link>
+          </div>
         </div>
 
         <article className="rounded-xl border border-border bg-card p-6">
@@ -84,8 +87,20 @@ export function PhaseTabs() {
               Plug-in modules · Catalog
             </p>
             <ul className="mt-3 flex flex-wrap gap-2 text-xs">
-              {["Task Board", "Help Center", "Projects", "Multi-tenancy", "Multi-Language", "Payments", "Auth", "Access mgmt"].map((m) => (
-                <li key={m} className="rounded-md border border-border bg-background px-2.5 py-1 text-foreground">
+              {[
+                "Task Board",
+                "Help Center",
+                "Projects",
+                "Multi-tenancy",
+                "Multi-Language",
+                "Payments",
+                "Auth",
+                "Access mgmt",
+              ].map((m) => (
+                <li
+                  key={m}
+                  className="rounded-md border border-border bg-background px-2.5 py-1 text-foreground"
+                >
                   {m}
                 </li>
               ))}
@@ -108,13 +123,50 @@ export function PhaseTabs() {
                 { t: "Refund flow", s: "5 stories · 1 ambiguity" },
                 { t: "Tax exemption codes", s: "3 stories · drafting" },
               ].map((row) => (
-                <li key={row.t} className="flex items-center justify-between p-3 text-sm">
+                <li
+                  key={row.t}
+                  className="flex items-center justify-between p-3 text-sm"
+                >
                   <span className="text-foreground">{row.t}</span>
                   <span className="text-xs text-muted-foreground">{row.s}</span>
                 </li>
               ))}
             </ul>
           </div>
+
+          <nav
+            aria-label="The five lifecycle phases"
+            className="mt-6 border-t border-border pt-4"
+          >
+            <p className="text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
+              Lifecycle phases
+            </p>
+            <ol className="mt-3 flex flex-wrap items-center gap-1.5 text-[11px]">
+              {phases.map((p, i) => (
+                <li key={p.anchor} className="flex items-center gap-1.5">
+                  <Link
+                    href={`/approach#${p.anchor}`}
+                    aria-current={p.current ? "step" : undefined}
+                    className={
+                      p.current
+                        ? "rounded-md border border-foreground/20 bg-foreground px-2 py-1 font-medium text-background"
+                        : "rounded-md border border-border bg-background px-2 py-1 text-muted-foreground hover:text-foreground"
+                    }
+                  >
+                    <span className="mr-1 tracking-[0.18em] uppercase">
+                      {p.n}
+                    </span>
+                    {p.label}
+                  </Link>
+                  {i < phases.length - 1 && (
+                    <span aria-hidden className="text-muted-foreground">
+                      ·
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </nav>
         </article>
       </div>
     </Section>
