@@ -66,9 +66,30 @@ type TowerNodeData = {
 type PhaseFlowNode = Node<PhaseNodeData, "phase">;
 type TowerFlowNode = Node<TowerNodeData, "tower">;
 
+const TICK_INITIAL_DELAY_MS = 280;
+const TICK_STAGGER_MS = 380;
+
 function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
   const Icon = phaseIcons[data.iconIndex] ?? FileText;
   const isHighlighted = data.isActive || data.isHandoffSource || data.isHandoffTarget;
+
+  const [tickedCount, setTickedCount] = useState(0);
+
+  useEffect(() => {
+    if (data.isActive) {
+      setTickedCount(0);
+      const timers = data.agents.map((_, i) =>
+        setTimeout(
+          () => setTickedCount(i + 1),
+          TICK_INITIAL_DELAY_MS + i * TICK_STAGGER_MS,
+        ),
+      );
+      return () => timers.forEach(clearTimeout);
+    }
+    if (!data.isHandoffSource) {
+      setTickedCount(0);
+    }
+  }, [data.isActive, data.isHandoffSource, data.agents]);
   return (
     <motion.div
       animate={{
@@ -152,17 +173,53 @@ function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
             (data.isActive ? "text-background/85" : "text-muted-foreground")
           }
         >
-          {data.agents.map((a) => (
-            <li key={a} className="flex items-center gap-1.5">
-              <span
-                className={
-                  "h-1 w-1 rounded-full " +
-                  (data.isActive ? "bg-background/70" : "bg-foreground/40")
-                }
-              />
-              {a}
-            </li>
-          ))}
+          {data.agents.map((a, idx) => {
+            const isTicked = idx < tickedCount;
+            return (
+              <li key={a} className="flex items-center gap-1.5">
+                <span className="inline-flex h-3 w-3 items-center justify-center">
+                  <AnimatePresence mode="wait" initial={false}>
+                    {isTicked ? (
+                      <motion.svg
+                        key="check"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 480, damping: 22 }}
+                        className="size-3 text-emerald-500"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        aria-hidden
+                      >
+                        <path
+                          d="M2.5 6.5 L5 9 L9.5 3.5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </motion.svg>
+                    ) : (
+                      <motion.span
+                        key="dot"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                        className={
+                          "h-1 w-1 rounded-full " +
+                          (data.isActive
+                            ? "bg-background/70"
+                            : "bg-foreground/40")
+                        }
+                      />
+                    )}
+                  </AnimatePresence>
+                </span>
+                {a}
+              </li>
+            );
+          })}
         </ul>
 
         <p
