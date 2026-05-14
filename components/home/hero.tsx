@@ -14,9 +14,9 @@ export function HomeHero() {
             The agentic SDLC platform
           </span>
 
-          <h1 className="mx-auto mt-7 max-w-[20ch] text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-            Ship software with twelve agents and one{" "}
-            <span className="text-dutch">control tower</span>.
+          <h1 className="mx-auto mt-7 max-w-[24ch] text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+            One <span className="text-dutch">control tower</span> for the
+            entire software lifecycle.
           </h1>
           <p className="mx-auto mt-6 max-w-[56ch] text-pretty text-lg text-muted-foreground">
             Xelerate orchestrates the whole software lifecycle — discovery, design,
