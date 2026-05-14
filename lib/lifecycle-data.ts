@@ -60,7 +60,7 @@ export const lifecyclePhases: LifecyclePhase[] = [
     step: "04",
     phase: "Testing",
     title: "Prove it works",
-    role: "QA Agent",
+    role: "Quality Assurance",
     initials: "QA",
     anchor: "phase-launch",
     verb: "Verifying",

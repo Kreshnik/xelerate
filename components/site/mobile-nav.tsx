@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
@@ -13,12 +13,18 @@ const links = [
   { label: "Contact", href: "/contact" },
 ];
 
-export function MobileNav() {
-  const [open, setOpen] = useState(false);
+export function MobileNav({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const pathname = usePathname();
 
   useEffect(() => {
-    setOpen(false);
+    onOpenChange(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   useEffect(() => {
@@ -39,7 +45,7 @@ export function MobileNav() {
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => onOpenChange(!open)}
         className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:border-foreground/30 md:hidden"
       >
         {open ? (
@@ -62,7 +68,7 @@ export function MobileNav() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      onClick={() => setOpen(false)}
+                      onClick={() => onOpenChange(false)}
                       aria-current={active ? "page" : undefined}
                       className={
                         "flex items-center justify-between rounded-md px-3 py-2.5 text-base transition-colors " +
