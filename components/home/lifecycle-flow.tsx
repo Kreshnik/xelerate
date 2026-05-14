@@ -19,6 +19,7 @@ import {
   FileText,
   GitPullRequest,
   LayoutGrid,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -26,45 +27,56 @@ import { AnimatePresence, motion } from "motion/react";
 import { lifecyclePhases } from "@/lib/lifecycle-data";
 import "@xyflow/react/dist/style.css";
 
-const NODE_WIDTH = 220;
-const NODE_X_STEP = 360;
-const PHASE_HOLD_MS = 1900;
-const RETURN_HOLD_MS = 1500;
+const PHASE_WIDTH = 220;
+const PHASE_X_STEP = 248;
+const PHASE_Y = 240;
+const TOWER_WIDTH = 260;
 
-const HANDOFF_LABELS = ["Brief", "Spec", "PR", "UAT"];
+const PHASE_HOLD_MS = 1300;
+const APPROVE_HOLD_MS = 800;
+const LOOP_HOLD_MS = 1200;
 
 const phaseIcons: LucideIcon[] = [
-  FileText,        // 01 Discovery → Brief
-  LayoutGrid,      // 02 Design → Spec
-  GitPullRequest,  // 03 Development → PR
-  ClipboardCheck,  // 04 Testing → UAT
-  Activity,        // 05 Maintenance → Signal
+  FileText,        // 01 Discovery
+  LayoutGrid,      // 02 Design
+  GitPullRequest,  // 03 Development
+  ClipboardCheck,  // 04 Testing
+  Activity,        // 05 Maintenance
 ];
 
 type PhaseNodeData = {
   step: string;
   phase: string;
-  title: string;
-  role: string;
-  initials: string;
+  caption: string;
+  agents: string[];
+  tagline: string;
   iconIndex: number;
   isActive: boolean;
+  isHandoffSource: boolean;
+  isHandoffTarget: boolean;
   isFirst: boolean;
   isLast: boolean;
 };
 
+type TowerNodeData = {
+  isApproving: boolean;
+  approvingFor: string | null;
+};
+
 type PhaseFlowNode = Node<PhaseNodeData, "phase">;
+type TowerFlowNode = Node<TowerNodeData, "tower">;
 
 function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
   const Icon = phaseIcons[data.iconIndex] ?? FileText;
+  const isHighlighted = data.isActive || data.isHandoffSource || data.isHandoffTarget;
   return (
     <motion.div
       animate={{
         scale: data.isActive ? 1.04 : 1,
-        opacity: data.isActive ? 1 : 0.55,
+        opacity: isHighlighted ? 1 : 0.55,
       }}
       transition={{ type: "spring", stiffness: 220, damping: 24 }}
-      style={{ width: NODE_WIDTH }}
+      style={{ width: PHASE_WIDTH }}
       className={
         "relative rounded-xl border transition-[border-color,background-color,box-shadow] duration-500 " +
         (data.isActive
@@ -72,6 +84,18 @@ function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
           : "border-border bg-card text-foreground shadow-sm")
       }
     >
+      <Handle
+        id="top-in"
+        type="target"
+        position={Position.Top}
+        className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
+      />
+      <Handle
+        id="top-out"
+        type="source"
+        position={Position.Top}
+        className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
+      />
       {!data.isFirst && (
         <Handle
           id="left-in"
@@ -88,24 +112,8 @@ function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
           className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
         />
       )}
-      {data.isFirst && (
-        <Handle
-          id="bottom-in"
-          type="target"
-          position={Position.Bottom}
-          className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
-        />
-      )}
-      {data.isLast && (
-        <Handle
-          id="bottom-out"
-          type="source"
-          position={Position.Bottom}
-          className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
-        />
-      )}
 
-      <div className="p-5">
+      <div className="p-4">
         <div className="flex items-center justify-between gap-2">
           <p
             className={
@@ -135,39 +143,126 @@ function PhaseNode({ data }: NodeProps<PhaseFlowNode>) {
             (data.isActive ? "text-background" : "text-foreground")
           }
         >
-          {data.title}
+          {data.caption}
         </p>
 
-        <div className="mt-5 flex items-center gap-2">
-          <span
-            className={
-              "relative inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold transition-colors duration-500 " +
-              (data.isActive
-                ? "bg-background text-foreground"
-                : "bg-secondary text-foreground")
-            }
-          >
-            {data.initials}
-          </span>
-          <span
-            className={
-              "text-xs transition-colors duration-500 " +
-              (data.isActive ? "text-background/80" : "text-muted-foreground")
-            }
-          >
-            {data.role}
-          </span>
+        <ul
+          className={
+            "mt-3 space-y-1 text-[11px] " +
+            (data.isActive ? "text-background/85" : "text-muted-foreground")
+          }
+        >
+          {data.agents.map((a) => (
+            <li key={a} className="flex items-center gap-1.5">
+              <span
+                className={
+                  "h-1 w-1 rounded-full " +
+                  (data.isActive ? "bg-background/70" : "bg-foreground/40")
+                }
+              />
+              {a}
+            </li>
+          ))}
+        </ul>
+
+        <p
+          className={
+            "mt-3 font-mono text-[10px] " +
+            (data.isActive ? "text-background/70" : "text-muted-foreground/80")
+          }
+        >
+          {data.tagline}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+function TowerNode({ data }: NodeProps<TowerFlowNode>) {
+  return (
+    <motion.div
+      animate={{
+        scale: data.isApproving ? 1.04 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 220, damping: 22 }}
+      style={{ width: TOWER_WIDTH }}
+      className={
+        "relative rounded-xl border bg-card transition-[border-color,box-shadow] duration-500 " +
+        (data.isApproving
+          ? "border-dutch shadow-[0_0_0_4px_var(--card),0_0_0_6px_color-mix(in_oklch,var(--dutch)_38%,transparent)]"
+          : "border-foreground/80 shadow-sm")
+      }
+    >
+      <Handle
+        id="bottom-out"
+        type="source"
+        position={Position.Bottom}
+        className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
+      />
+      <Handle
+        id="bottom-in"
+        type="target"
+        position={Position.Bottom}
+        className="!h-2 !w-2 !rounded-full !border-0 !bg-foreground/40"
+      />
+
+      <div className="flex items-center gap-3 p-4">
+        <span
+          className={
+            "relative inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors duration-500 " +
+            (data.isApproving
+              ? "bg-dutch text-dutch-foreground"
+              : "bg-foreground text-background")
+          }
+        >
+          <ShieldCheck className="size-4" aria-hidden />
+          {data.isApproving && (
+            <motion.span
+              aria-hidden
+              className="absolute inset-0 rounded-md"
+              animate={{ opacity: [0.8, 0, 0.8], scale: [1, 1.4, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                boxShadow: "0 0 0 2px var(--dutch)",
+              }}
+            />
+          )}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
+            Human Control Tower
+          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={data.approvingFor ?? "idle"}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.2 }}
+              className={
+                "mt-0.5 truncate text-sm font-semibold tracking-tight " +
+                (data.isApproving ? "text-dutch" : "text-foreground")
+              }
+            >
+              {data.isApproving
+                ? `Approving · ${data.approvingFor}`
+                : "Waiting on the gate"}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>
   );
 }
 
-const nodeTypes = { phase: PhaseNode } satisfies NodeTypes;
+const nodeTypes = { phase: PhaseNode, tower: TowerNode } satisfies NodeTypes;
 
 export function LifecycleFlow() {
-  // 0..N-1 = phase active, N = return arc cycle
-  const TOTAL_STEPS = lifecyclePhases.length + 1;
+  const TOTAL_PHASES = lifecyclePhases.length;
+  // Substeps: 2 per phase (active, approving). 10 total.
+  // Even index = phase active; odd index = approving (handoff from phase i to next).
+  const TOTAL_STEPS = TOTAL_PHASES * 2;
+
   const [step, setStep] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -179,32 +274,43 @@ export function LifecycleFlow() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  const isReturning = step === lifecyclePhases.length;
-  const activeIdx = isReturning ? -1 : step;
+  const phaseIdx = Math.floor(step / 2);
+  const isApproving = step % 2 === 1;
+  const isLastApproval = isApproving && phaseIdx === TOTAL_PHASES - 1;
+  const nextPhaseIdx = (phaseIdx + 1) % TOTAL_PHASES;
 
   useEffect(() => {
     if (reduceMotion) return;
-    const delay = isReturning ? RETURN_HOLD_MS : PHASE_HOLD_MS;
+    const delay = isApproving
+      ? isLastApproval
+        ? LOOP_HOLD_MS
+        : APPROVE_HOLD_MS
+      : PHASE_HOLD_MS;
     const timer = setTimeout(() => {
       setStep((s) => (s + 1) % TOTAL_STEPS);
     }, delay);
     return () => clearTimeout(timer);
-  }, [step, isReturning, reduceMotion, TOTAL_STEPS]);
+  }, [step, isApproving, isLastApproval, reduceMotion, TOTAL_STEPS]);
 
-  const nodes = useMemo<PhaseFlowNode[]>(() => {
-    const lastIdx = lifecyclePhases.length - 1;
-    return lifecyclePhases.map((p, i) => ({
+  const rowSpanX = (TOTAL_PHASES - 1) * PHASE_X_STEP + PHASE_WIDTH;
+  const towerX = (rowSpanX - TOWER_WIDTH) / 2;
+
+  const nodes = useMemo<Node[]>(() => {
+    const lastIdx = TOTAL_PHASES - 1;
+    const phaseNodes: PhaseFlowNode[] = lifecyclePhases.map((p, i) => ({
       id: p.step,
       type: "phase",
-      position: { x: i * NODE_X_STEP, y: 0 },
+      position: { x: i * PHASE_X_STEP, y: PHASE_Y },
       data: {
         step: p.step,
         phase: p.phase,
-        title: p.title,
-        role: p.role,
-        initials: p.initials,
+        caption: p.caption,
+        agents: p.agents,
+        tagline: p.tagline,
         iconIndex: i,
-        isActive: i === activeIdx,
+        isActive: i === phaseIdx && !isApproving,
+        isHandoffSource: isApproving && i === phaseIdx,
+        isHandoffTarget: isApproving && i === nextPhaseIdx && !isLastApproval,
         isFirst: i === 0,
         isLast: i === lastIdx,
       },
@@ -212,100 +318,80 @@ export function LifecycleFlow() {
       selectable: false,
       connectable: false,
     }));
-  }, [activeIdx]);
+
+    const towerNode: TowerFlowNode = {
+      id: "tower",
+      type: "tower",
+      position: { x: towerX, y: 0 },
+      data: {
+        isApproving,
+        approvingFor: isApproving ? lifecyclePhases[phaseIdx].caption : null,
+      },
+      draggable: false,
+      selectable: false,
+      connectable: false,
+    };
+
+    return [towerNode, ...phaseNodes];
+  }, [phaseIdx, isApproving, isLastApproval, nextPhaseIdx, towerX, TOTAL_PHASES]);
 
   const edges = useMemo<Edge[]>(() => {
-    const lastIdx = lifecyclePhases.length - 1;
-    const forwardEdges: Edge[] = lifecyclePhases
-      .slice(0, -1)
-      .map((p, i) => ({
+    // Rays from tower to each phase (always present, faint by default)
+    const rayEdges: Edge[] = lifecyclePhases.map((p, i) => {
+      const litForApproval =
+        isApproving && (i === phaseIdx || (i === nextPhaseIdx && !isLastApproval));
+      const litForActive = !isApproving && i === phaseIdx;
+      const isLit = litForApproval || litForActive;
+      return {
+        id: `ray-${p.step}`,
+        source: "tower",
+        sourceHandle: "bottom-out",
+        target: p.step,
+        targetHandle: "top-in",
+        type: "default",
+        animated: litForApproval,
+        style: {
+          stroke: litForApproval ? "var(--dutch)" : "var(--foreground)",
+          strokeWidth: isLit ? 1.5 : 1,
+          strokeDasharray: "4 4",
+          opacity: isLit ? 0.9 : 0.25,
+        },
+      };
+    });
+
+    // Forward edges between adjacent phases
+    const forwardEdges: Edge[] = lifecyclePhases.slice(0, -1).map((p, i) => {
+      const isCurrentHandoff = isApproving && i === phaseIdx && !isLastApproval;
+      return {
         id: `forward-${p.step}-${lifecyclePhases[i + 1].step}`,
         source: p.step,
         sourceHandle: "right-out",
         target: lifecyclePhases[i + 1].step,
         targetHandle: "left-in",
         type: "default",
-        animated: true,
-        label: HANDOFF_LABELS[i],
-        labelBgPadding: [8, 4],
-        labelBgBorderRadius: 10,
-        labelBgStyle: {
-          fill: "var(--card)",
-          stroke: "var(--border)",
-          strokeWidth: 1,
-        },
-        labelStyle: {
-          fill: "var(--foreground)",
-          fontSize: 10,
-          fontWeight: 500,
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-        },
+        animated: isCurrentHandoff,
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          width: 18,
-          height: 18,
-          color: "var(--foreground)",
+          width: 14,
+          height: 14,
+          color: isCurrentHandoff ? "var(--dutch)" : "var(--foreground)",
         },
         style: {
-          stroke: "var(--foreground)",
-          strokeWidth: 1.8,
-          opacity: 0.9,
+          stroke: isCurrentHandoff ? "var(--dutch)" : "var(--foreground)",
+          strokeWidth: isCurrentHandoff ? 1.8 : 1.1,
+          opacity: isCurrentHandoff ? 1 : 0.4,
         },
-      }));
+      };
+    });
 
-    const returnEdge: Edge = {
-      id: "return-loop",
-      source: lifecyclePhases[lastIdx].step,
-      sourceHandle: "bottom-out",
-      target: lifecyclePhases[0].step,
-      targetHandle: "bottom-in",
-      type: "smoothstep",
-      animated: true,
-      label: "Insight",
-      labelBgPadding: [8, 4],
-      labelBgBorderRadius: 12,
-      labelBgStyle: {
-        fill: isReturning ? "var(--dutch)" : "var(--card)",
-        stroke: isReturning ? "var(--dutch)" : "var(--border)",
-        strokeWidth: 1,
-      },
-      labelStyle: {
-        fill: isReturning ? "var(--dutch-foreground)" : "var(--foreground)",
-        fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: "0.16em",
-        textTransform: "uppercase",
-      },
-      style: {
-        stroke: isReturning ? "var(--dutch)" : "var(--foreground)",
-        strokeWidth: isReturning ? 2 : 1.4,
-        strokeDasharray: "5 5",
-        opacity: isReturning ? 1 : 0.5,
-      },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        width: isReturning ? 16 : 14,
-        height: isReturning ? 16 : 14,
-        color: isReturning ? "var(--dutch)" : "var(--foreground)",
-      },
-      data: { borderRadius: 28, offset: 40 },
-    };
+    return [...rayEdges, ...forwardEdges];
+  }, [phaseIdx, isApproving, isLastApproval, nextPhaseIdx]);
 
-    return [...forwardEdges, returnEdge];
-  }, [isReturning]);
-
-  const currentPhase = activeIdx >= 0 ? lifecyclePhases[activeIdx] : null;
-  const verb =
-    currentPhase &&
-    "verb" in currentPhase &&
-    typeof (currentPhase as { verb?: unknown }).verb === "string"
-      ? (currentPhase as { verb: string }).verb
-      : currentPhase?.title;
+  const currentPhase = lifecyclePhases[phaseIdx];
 
   return (
     <div className="space-y-6">
-      {/* Stationary narrator above the diagram */}
+      {/* Narrator */}
       <div className="relative mx-auto h-16 max-w-2xl">
         <AnimatePresence mode="wait">
           <motion.div
@@ -313,53 +399,47 @@ export function LifecycleFlow() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.3 }}
             className="absolute inset-0 flex flex-col items-center justify-center text-center"
           >
-            {isReturning ? (
+            {isApproving ? (
               <>
                 <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] text-dutch uppercase">
                   <span className="relative inline-flex h-1.5 w-1.5">
                     <span className="absolute inset-0 rounded-full bg-dutch opacity-70 motion-safe:animate-ping" />
                     <span className="relative inline-block h-1.5 w-1.5 rounded-full bg-dutch" />
                   </span>
-                  The loop closes
+                  Human Control Tower
                 </p>
                 <p className="mt-2 text-balance text-base font-semibold tracking-tight text-foreground sm:text-lg">
-                  Production signal becomes the next brief.
+                  {isLastApproval
+                    ? "Signal from production becomes the next brief."
+                    : `Approves ${currentPhase.caption.toLowerCase()}.`}
                 </p>
               </>
-            ) : currentPhase ? (
+            ) : (
               <>
                 <p className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                  Now · Phase {currentPhase.step} of 05
+                  Phase {currentPhase.step} of 05 · {currentPhase.phase}
                 </p>
                 <p className="mt-2 text-balance text-base font-semibold tracking-tight text-foreground sm:text-lg">
-                  <span className="text-muted-foreground">
-                    {currentPhase.role}
-                  </span>{" "}
-                  <span aria-hidden className="text-muted-foreground/70">
-                    is
-                  </span>{" "}
-                  <span className="text-foreground">
-                    {(verb ?? currentPhase.title).toString().toLowerCase()}
-                  </span>
-                  <span className="text-muted-foreground">.</span>
+                  {currentPhase.caption}
+                  <span className="text-muted-foreground"> — {currentPhase.tagline}</span>
                 </p>
               </>
-            ) : null}
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* React Flow surface */}
-      <div className="relative h-[380px] w-full overflow-hidden">
+      {/* React Flow surface (no border, hugs content) */}
+      <div className="relative h-[460px] w-full overflow-hidden">
         <ReactFlow
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.16, includeHiddenNodes: false }}
+          fitViewOptions={{ padding: 0.12, includeHiddenNodes: false }}
           minZoom={0.4}
           maxZoom={1.2}
           nodesDraggable={false}
@@ -385,10 +465,6 @@ export function LifecycleFlow() {
         </ReactFlow>
       </div>
 
-      {/* Bottom caption */}
-      <p className="text-center font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-        Demo cycle · One feature, end to end, humans in the loop
-      </p>
     </div>
   );
 }
