@@ -4,26 +4,28 @@ import { Logo } from "./logo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const productLinks = [
+type FooterItem = { label: string; href?: string; soon?: boolean };
+
+const productLinks: FooterItem[] = [
   { label: "Home", href: "/" },
   { label: "Product", href: "/product" },
   { label: "Solutions", href: "/solutions" },
   { label: "Approach", href: "/approach" },
 ];
 
-const companyLinks = [
+const companyLinks: FooterItem[] = [
   { label: "About", href: "/about" },
   { label: "Careers", href: "/about#careers" },
   { label: "Contact", href: "/contact" },
 ];
 
-const resourceLinks = [
-  { label: "Documentation", href: "/contact" },
-  { label: "Blog", href: "/contact" },
+const resourceLinks: FooterItem[] = [
+  { label: "Documentation", soon: true },
+  { label: "Blog", soon: true },
   { label: "Status", href: "https://status.xelerate.ai/" },
 ];
 
-const legalLinks = [
+const legalLinks: FooterItem[] = [
   { label: "Privacy", href: "/legal/privacy" },
   { label: "Terms", href: "/legal/terms" },
   { label: "Security", href: "/legal/security" },
@@ -34,7 +36,7 @@ function FooterColumn({
   items,
 }: {
   heading: string;
-  items: { label: string; href: string }[];
+  items: FooterItem[];
 }) {
   return (
     <nav aria-label={heading}>
@@ -44,12 +46,21 @@ function FooterColumn({
       <ul className="mt-4 space-y-3 text-sm">
         {items.map((item) => (
           <li key={`${heading}-${item.label}`}>
-            <Link
-              href={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item.label}
-            </Link>
+            {item.soon ? (
+              <span className="inline-flex items-center gap-2 text-muted-foreground/60">
+                {item.label}
+                <span className="rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[9px] tracking-wider text-muted-foreground uppercase">
+                  Soon
+                </span>
+              </span>
+            ) : (
+              <Link
+                href={item.href ?? "#"}
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {item.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

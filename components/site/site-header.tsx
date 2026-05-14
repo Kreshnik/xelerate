@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "./container";
 import { Logo } from "./logo";
+import { MobileNav } from "./mobile-nav";
 import { Button } from "@/components/ui/button";
 
 const primaryNav = [
@@ -39,13 +40,14 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <Link
             href="/contact"
-            className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline-block"
+            className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground md:inline-block"
           >
             Contact
           </Link>
           <Button asChild variant="brand" size="sm">
             <Link href="/sign-in">Sign in</Link>
           </Button>
+          <MobileNav />
         </div>
       </Container>
     </header>
