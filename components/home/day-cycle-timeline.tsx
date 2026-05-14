@@ -35,7 +35,7 @@ type TrackProps = {
 
 function Track({ label, activities, getActive }: TrackProps) {
   return (
-    <div>
+    <div className="relative z-10">
       <p className="text-[10px] font-medium tracking-[0.18em] text-foreground uppercase">
         {label}
       </p>
@@ -92,7 +92,7 @@ export function DayCycleTimeline() {
   const nowLeft = now ? pct(now.hour) : "0%";
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8">
       <div className="flex items-center justify-between text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
         <span>24-hour cycle</span>
         <span className="inline-flex min-h-4 items-center gap-2 text-dutch">
@@ -108,7 +108,15 @@ export function DayCycleTimeline() {
         </span>
       </div>
 
-      <div className="relative mt-7 space-y-10">
+      <div className="relative isolate mt-7 space-y-10">
+        {now && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-y-40 -z-10 w-0 -translate-x-px border-l border-dashed border-dutch"
+            style={{ left: nowLeft }}
+          />
+        )}
+
         <Track
           label="Humans · 9 → 17"
           activities={HUMAN_ACTIVITIES}
@@ -121,19 +129,13 @@ export function DayCycleTimeline() {
         />
 
         {now && (
-          <>
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 z-10 w-px -translate-x-1/2 bg-dutch"
-              style={{ left: nowLeft }}
-            />
-            <span
-              className="pointer-events-none absolute -top-3 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-dutch px-2 py-0.5 text-[9px] font-medium tracking-wider text-dutch-foreground uppercase shadow-sm"
-              style={{ left: nowLeft }}
-            >
-              Now
-            </span>
-          </>
+          <span
+            className="pointer-events-none absolute -top-8 z-20 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-dutch/30 bg-card px-2 py-0.5 text-[9px] font-medium tracking-[0.18em] text-dutch uppercase shadow-sm"
+            style={{ left: nowLeft }}
+          >
+            <span className="h-1 w-1 rounded-full bg-dutch" />
+            Now · {now.label}
+          </span>
         )}
       </div>
 

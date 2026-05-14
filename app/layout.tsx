@@ -40,7 +40,7 @@ export default function RootLayout({
       lang="en"
       className={`${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-background text-foreground font-sans flex flex-col">
+      <body className="flex min-h-svh flex-col bg-background font-sans text-foreground">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
