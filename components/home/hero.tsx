@@ -5,7 +5,7 @@ import { HeroFlow } from "./hero-flow";
 
 export function HomeHero() {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-background">
+    <section className="relative flex min-h-svh flex-col justify-center overflow-hidden border-b border-border bg-background">
       <HeroFlow />
       <Container className="relative py-24 sm:py-28 lg:py-32">
         <div className="text-center">

@@ -11,7 +11,7 @@ interface PageHeroProps {
 
 export function PageHero({ eyebrow, title, lede, children }: PageHeroProps) {
   return (
-    <section className="border-b border-border bg-background">
+    <section className="flex min-h-svh flex-col justify-center border-b border-border bg-background">
       <Container className="py-20 sm:py-24 lg:py-28">
         <div className="max-w-3xl">
           <Eyebrow>{eyebrow}</Eyebrow>

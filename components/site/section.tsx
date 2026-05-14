@@ -9,7 +9,10 @@ export function Section({
 }: HTMLAttributes<HTMLElement>) {
   return (
     <section
-      className={cn("py-20 sm:py-24 lg:py-28", className)}
+      className={cn(
+        "flex min-h-svh flex-col justify-center py-20 sm:py-24 lg:py-28",
+        className,
+      )}
       {...props}
     >
       <Container>{children}</Container>
